@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Smart Employee Working system{% endblock %}
+
+{% block content %}
+  {% if not access_state.approved %}
+    <section class="access-banner" role="status">
+      Access is pending. Use Join Now, then wait for admin approval.
+    </section>
+  {% endif %}
+
+  <section class="dashboard-head" aria-label="Dashboard overview">
+    <div>
+      <p class="eyebrow">Master Dashboard</p>
+      <h1>Employee tools</h1>
+    </div>
+    <span class="dashboard-count">{{ tool_cards|length }} Modules</span>
+  </section>
+
+  <section class="tool-grid {% if not access_state.approved %}is-locked{% endif %}" aria-label="Tool list" data-access-approved="{{ 'true' if access_state.approved else 'false' }}">
+    {% for card in tool_cards %}
+      {% if card.disabled %}
+        <article class="tool-card is-disabled accent-{{ card.accent }}" aria-disabled="true">
+          <div class="card-icon"><i data-lucide="{{ card.icon }}"></i></div>
+          <div class="card-copy">
+            <div class="card-title-row">
+              <h2>{{ card.title }}</h2>
+              <span class="soon-badge">{{ card.badge }}</span>
+            </div>
+            <p>{{ card.description }}</p>
+          </div>
+        </article>
+      {% else %}
+        <a class="tool-card accent-{{ card.accent }}" href="{{ url_for(card.endpoint) }}" data-tool-card>
+          <div class="card-icon"><i data-lucide="{{ card.icon }}"></i></div>
+          <div class="card-copy">
+            <h2>{{ card.title }}</h2>
+            <p>{{ card.description }}</p>
+          </div>
+          <span class="open-indicator" aria-hidden="true"><i data-lucide="arrow-up-right"></i></span>
+        </a>
+      {% endif %}
+    {% endfor %}
+  </section>
+{% endblock %}

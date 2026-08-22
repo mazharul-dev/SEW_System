@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login | Smart Employee Working system{% endblock %}
+
+{% block content %}
+  <section class="dashboard-head" aria-label="Admin login">
+    <div>
+      <p class="eyebrow">Admin Panel</p>
+      <h1>Approval login</h1>
+    </div>
+  </section>
+
+  <section class="form-layout">
+    <form class="tool-form" method="post" action="{{ url_for('dashboard.admin_login') }}">
+      <div class="tool-form-head">
+        <span class="mini-tool-icon"><i data-lucide="shield-check"></i></span>
+        <div>
+          <p class="eyebrow">Protected</p>
+          <h1>Admin access</h1>
+        </div>
+      </div>
+      {% if error %}
+        <div class="form-alert">{{ error }}</div>
+      {% endif %}
+      <label class="field">
+        <span>Username</span>
+        <input type="text" name="username" autocomplete="username" required />
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input type="password" name="password" autocomplete="current-password" required />
+      </label>
+      <button class="primary-button" type="submit">
+        <i data-lucide="log-in"></i>
+        Login
+      </button>
+    </form>
+  </section>
+{% endblock %}

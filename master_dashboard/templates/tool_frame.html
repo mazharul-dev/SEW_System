@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} | Smart Employee Working system{% endblock %}
+
+{% block content %}
+  <section class="embedded-tool" aria-label="{{ title }} workspace">
+    <iframe src="{{ iframe_src }}" title="{{ title }}" loading="eager"></iframe>
+  </section>
+{% endblock %}

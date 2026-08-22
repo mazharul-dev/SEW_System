@@ -1,0 +1,22 @@
+{
+  "requests": {
+    "compat@example.com": {
+      "approved_at": "2026-08-22T11:08:51+00:00",
+      "created_at": "2026-08-22T11:08:51+00:00",
+      "email": "compat@example.com",
+      "status": "approved"
+    },
+    "mazharuli325@gmail.com": {
+      "approved_at": "2026-08-22T10:05:12+00:00",
+      "created_at": "2026-08-22T10:05:08+00:00",
+      "email": "mazharuli325@gmail.com",
+      "status": "approved"
+    },
+    "realcheck@example.com": {
+      "approved_at": "2026-08-22T10:05:01+00:00",
+      "created_at": "2026-08-22T10:01:29+00:00",
+      "email": "realcheck@example.com",
+      "status": "approved"
+    }
+  }
+}

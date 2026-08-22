@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Table Based Convert | Smart Employee Working system{% endblock %}
+
+{% block content %}
+  <section class="table-converter-workspace" aria-label="Table Based Convert">
+    <aside class="tool-rail" aria-hidden="true">
+      <span class="tool-rail-icon"><i data-lucide="table-properties"></i></span>
+      <span>DOCX</span>
+      <strong>8 Row Table</strong>
+    </aside>
+
+    <form class="tool-form" method="post" action="{{ url_for('table_converter.convert_table') }}" enctype="multipart/form-data">
+      <div class="tool-form-head">
+        <span class="mini-tool-icon"><i data-lucide="table-properties"></i></span>
+        <div>
+          <p class="eyebrow">Integrated Tool</p>
+          <h1>Table Based Convert</h1>
+        </div>
+      </div>
+
+      {% if error %}
+        <div class="form-alert">{{ error }}</div>
+      {% endif %}
+
+      <label class="field">
+        <span>Subject / Category Name</span>
+        <input name="subject" type="text" placeholder="Mental Ability, Higher Math, Physics" value="{{ subject or '' }}" required />
+      </label>
+
+      <label class="file-drop">
+        <input type="file" name="upload" accept=".docx" required />
+        <span class="file-drop-icon"><i data-lucide="file-up"></i></span>
+        <span>
+          <strong>DOCX file</strong>
+          <small>Select the unstructured source document.</small>
+        </span>
+      </label>
+
+      <button class="primary-button" type="submit">
+        <i data-lucide="download"></i>
+        Convert & Download
+      </button>
+    </form>
+  </section>
+{% endblock %}

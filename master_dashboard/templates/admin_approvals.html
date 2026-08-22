@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Approvals | Smart Employee Working system{% endblock %}
+
+{% block content %}
+  <section class="dashboard-head" aria-label="Approval overview">
+    <div>
+      <p class="eyebrow">Admin Panel</p>
+      <h1>Join requests</h1>
+    </div>
+    <span class="dashboard-count">{{ approval_requests|length }} Pending</span>
+  </section>
+
+  <section class="admin-panel-shell">
+    <div class="admin-panel-card">
+      <div class="admin-panel-head">
+        <strong>Pending and approved users</strong>
+        <form method="post" action="{{ url_for('dashboard.admin_logout') }}">
+          <button class="secondary-button compact-button" type="submit">
+            <i data-lucide="log-out"></i>
+            Logout
+          </button>
+        </form>
+      </div>
+      {% if approval_requests %}
+        <div class="approval-list">
+          {% for item in approval_requests %}
+            <article class="approval-row approval-{{ item.status }}">
+              <div>
+                <strong>{{ item.email }}</strong>
+                <small>{{ item.status|title }}{% if item.approved_at %} · {{ item.approved_at }}{% endif %}</small>
+              </div>
+              <div class="approval-actions">
+                <form method="post" action="{{ url_for('dashboard.admin_approve') }}">
+                  <input type="hidden" name="email" value="{{ item.email }}" />
+                  <button class="primary-button" type="submit">Approve</button>
+                </form>
+                <form method="post" action="{{ url_for('dashboard.admin_revoke') }}">
+                  <input type="hidden" name="email" value="{{ item.email }}" />
+                  <button class="secondary-button" type="submit">Revoke</button>
+                </form>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="empty-state">No join requests yet.</p>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

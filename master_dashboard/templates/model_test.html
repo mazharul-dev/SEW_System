@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Model Test Book Generate | Smart Employee Working system{% endblock %}
+
+{% block content %}
+  <section class="tool-head" aria-label="Model Test Book Generate">
+    <div class="tool-title">
+      <span class="tool-title-icon"><i data-lucide="book-open-check"></i></span>
+      <div>
+        <p class="eyebrow">Integrated Tool</p>
+        <h1>Model Test Book Generate</h1>
+        <p>Upload an exam DOCX and generate a cleaned, print-ready model test file.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="form-layout">
+    <form class="tool-form" method="post" action="{{ url_for('model_test.convert_model_test') }}" enctype="multipart/form-data">
+      {% if error %}
+        <div class="form-alert">{{ error }}</div>
+      {% endif %}
+
+      <label class="file-drop">
+        <input type="file" name="upload" accept=".docx" required />
+        <span class="file-drop-icon"><i data-lucide="file-up"></i></span>
+        <span>
+          <strong>DOCX file</strong>
+          <small>Select a model test or exam question file.</small>
+        </span>
+      </label>
+
+      <div class="option-grid">
+        <label class="check-row">
+          <input type="checkbox" name="delete_solve" checked />
+          <span>Remove Solve sections</span>
+        </label>
+        <label class="check-row">
+          <input type="checkbox" name="convert_omr" checked />
+          <span>Convert options to OMR symbols</span>
+        </label>
+        <label class="check-row">
+          <input type="checkbox" name="two_column" checked />
+          <span>Generate two-column output</span>
+        </label>
+        <label class="check-row">
+          <input type="checkbox" name="keep_answer_marks" />
+          <span>Keep answer marks</span>
+        </label>
+      </div>
+
+      <button class="primary-button" type="submit">
+        <i data-lucide="download"></i>
+        Generate DOCX
+      </button>
+    </form>
+  </section>
+{% endblock %}

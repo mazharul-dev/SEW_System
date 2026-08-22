@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}In-Branch Question Convert | Smart Employee Working system{% endblock %}
+
+{% block content %}
+  <section class="branch-converter-workspace" aria-label="In-Branch Question Convert">
+    <aside class="branch-panel" aria-hidden="true">
+      <span class="branch-panel-icon"><i data-lucide="git-branch"></i></span>
+      <span>In-Branch</span>
+      <strong>Unicode to SutonnyMJ</strong>
+    </aside>
+
+    <form class="branch-form" method="post" action="{{ url_for('in_branch.convert') }}" enctype="multipart/form-data">
+      <div class="tool-form-head">
+        <span class="mini-tool-icon branch-mini-icon"><i data-lucide="file-type-2"></i></span>
+        <div>
+          <p class="eyebrow">DOCX Converter</p>
+          <h1>In-Branch Question Convert</h1>
+        </div>
+      </div>
+
+      {% if error %}
+        <div class="form-alert">{{ error }}</div>
+      {% endif %}
+
+      <label class="file-drop branch-drop">
+        <input type="file" name="upload" accept=".docx" required />
+        <span class="file-drop-icon branch-file-icon"><i data-lucide="file-up"></i></span>
+        <span>
+          <strong>Unicode / Avro DOCX</strong>
+          <small>Select input .docx</small>
+        </span>
+      </label>
+
+      <div class="branch-spec-grid" aria-label="Conversion summary">
+        <div>
+          <span>Input</span>
+          <strong>Unicode</strong>
+        </div>
+        <div>
+          <span>Output</span>
+          <strong>SutonnyMJ</strong>
+        </div>
+      </div>
+
+      <button class="primary-button branch-button" type="submit">
+        <i data-lucide="download"></i>
+        Convert & Download
+      </button>
+    </form>
+  </section>
+{% endblock %}

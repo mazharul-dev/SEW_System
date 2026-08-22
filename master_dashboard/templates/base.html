@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Smart Employee Working system{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('dashboard.assets', filename='css/app.css') }}" />
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <header class="global-header">
+      <a class="brand" href="{{ url_for('dashboard.dashboard') }}" aria-label="Dashboard">
+        <span class="brand-icon"><i data-lucide="briefcase-business"></i></span>
+        <span class="brand-title">Smart Employee Working system</span>
+      </a>
+      <span class="version-chip">
+        <i data-lucide="badge-info"></i>
+        Version 1.&infin;
+      </span>
+      <nav class="header-actions" aria-label="Primary">
+        <a
+          class="icon-button"
+          href="http://mazharul.dev.cv/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Developer"
+          title="Developer"
+        >
+          <i data-lucide="code-2"></i>
+        </a>
+        <button
+          class="nav-button join-button"
+          type="button"
+          data-open-join
+          data-join-label="{{ 'Approved' if access_state.approved else 'Join Now' }}"
+        >
+          <i data-lucide="user-round-plus"></i>
+          <span>{{ 'Approved' if access_state.approved else 'Join Now' }}</span>
+        </button>
+        <a class="nav-button" href="{{ url_for('dashboard.dashboard') }}">
+          <i data-lucide="layout-dashboard"></i>
+          Dashboard
+        </a>
+      </nav>
+    </header>
+
+    <main
+      class="page-shell"
+      data-access-approved="{{ 'true' if access_state.approved else 'false' }}"
+      data-access-status="{{ access_state.status }}"
+      data-access-email="{{ access_state.email }}"
+    >
+      {% block content %}{% endblock %}
+    </main>
+
+    <div class="modal-backdrop" data-join-modal hidden>
+      <section class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="join-modal-title">
+        <div class="modal-header">
+          <div>
+            <p class="eyebrow">Join Access</p>
+            <h2 id="join-modal-title">Request approval</h2>
+          </div>
+          <button class="icon-button modal-close" type="button" data-close-join aria-label="Close">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <form class="modal-form" data-join-form method="post" action="{{ url_for('dashboard.join_request') }}">
+          <label class="field">
+            <span>Mail address</span>
+            <input type="email" name="email" placeholder="name@example.com" autocomplete="email" required />
+          </label>
+          <p class="modal-note">01706452007 এই নাম্বারে যোগাযোগ করে approval নিন।</p>
+          <div class="modal-actions">
+            <button class="primary-button" type="submit">Submit</button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div class="modal-backdrop" data-message-modal hidden>
+      <section class="modal-panel modal-message" role="alertdialog" aria-modal="true" aria-labelledby="message-modal-title">
+        <div class="modal-header">
+          <div>
+            <p class="eyebrow">Status</p>
+            <h2 id="message-modal-title">Request received</h2>
+          </div>
+        </div>
+        <p class="modal-note" data-join-message></p>
+        <div class="modal-actions">
+          <button class="primary-button" type="button" data-close-message>OK</button>
+        </div>
+      </section>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="{{ url_for('dashboard.assets', filename='js/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>
