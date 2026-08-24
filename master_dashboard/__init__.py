@@ -12,6 +12,7 @@ from .routes import (
     dashboard_bp,
     in_branch_bp,
     model_test_bp,
+    multi_repeat_bp,
     proofreader_bp,
     table_converter_bp,
 )
@@ -36,6 +37,7 @@ def create_app() -> Flask:
     app.register_blueprint(proofreader_bp)
     app.register_blueprint(table_converter_bp)
     app.register_blueprint(in_branch_bp)
+    app.register_blueprint(multi_repeat_bp)
 
     @app.context_processor
     def inject_access_state() -> dict[str, object]:

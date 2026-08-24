@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}Smart Employee Working system{% endblock %}</title>
+    <title>{% block title %}Smart Employee Working System{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('dashboard.assets', filename='css/app.css') }}" />
     {% block head %}{% endblock %}
   </head>
@@ -11,11 +11,11 @@
     <header class="global-header">
       <a class="brand" href="{{ url_for('dashboard.dashboard') }}" aria-label="Dashboard">
         <span class="brand-icon"><i data-lucide="briefcase-business"></i></span>
-        <span class="brand-title">Smart Employee Working system</span>
+        <span class="brand-title">Smart Employee Working System</span>
       </a>
       <span class="version-chip">
         <i data-lucide="badge-info"></i>
-        Version 1.&infin;
+        0.2.&infin;
       </span>
       <nav class="header-actions" aria-label="Primary">
         <a
@@ -69,7 +69,6 @@
             <span>Mail address</span>
             <input type="email" name="email" placeholder="name@example.com" autocomplete="email" required />
           </label>
-          <p class="modal-note">01706452007 এই নাম্বারে যোগাযোগ করে approval নিন।</p>
           <div class="modal-actions">
             <button class="primary-button" type="submit">Submit</button>
           </div>

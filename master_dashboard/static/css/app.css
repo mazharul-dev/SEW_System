@@ -12,6 +12,7 @@
   --amber: #d97706;
   --green: #15803d;
   --rose: #be123c;
+  --violet: #6d28d9;
   --shadow: 0 18px 42px rgba(31, 44, 60, 0.1);
 }
 
@@ -269,6 +270,10 @@ h1 {
   border-top-color: var(--rose);
 }
 
+.accent-violet {
+  border-top-color: var(--violet);
+}
+
 .accent-muted {
   border-top-color: #94a3b8;
 }
@@ -303,6 +308,12 @@ h1 {
   color: var(--rose);
   background: #fff1f2;
   border-color: #f6b1bd;
+}
+
+.accent-violet .card-icon {
+  color: var(--violet);
+  background: #f5f0ff;
+  border-color: #d8c7ff;
 }
 
 .accent-muted .card-icon {
@@ -401,6 +412,16 @@ h1 {
 .branch-converter-workspace {
   display: grid;
   grid-template-columns: minmax(320px, 560px);
+}
+
+.admin-login-layout {
+  min-height: calc(100vh - var(--header-height) - 72px);
+  place-content: center;
+  justify-items: center;
+}
+
+.admin-login-layout .tool-form {
+  width: min(100%, 560px);
 }
 
 .table-converter-workspace {
@@ -540,6 +561,161 @@ h1 {
 
 .branch-button:hover {
   background: #9f1239;
+}
+
+.multi-repeat-layout {
+  display: grid;
+  grid-template-columns: minmax(360px, 500px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.multi-repeat-form {
+  border-top-color: var(--violet);
+}
+
+.multi-title-icon,
+.multi-mini-icon,
+.multi-file-icon {
+  color: var(--violet);
+  background: #f5f0ff;
+  border-color: #d8c7ff;
+}
+
+.multi-upload-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.multi-drop {
+  min-height: 96px;
+  border-color: #cbb7ff;
+  background:
+    linear-gradient(135deg, rgba(109, 40, 217, 0.08), rgba(255, 255, 255, 0.95) 44%),
+    var(--panel-soft);
+}
+
+.multi-button {
+  background: var(--violet);
+}
+
+.multi-button:hover {
+  background: #5b21b6;
+}
+
+.multi-result-panel {
+  display: grid;
+  gap: 14px;
+  border: 1px solid var(--line);
+  border-top: 5px solid var(--violet);
+  border-radius: 8px;
+  background: #fff;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.multi-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.multi-summary-grid div {
+  min-height: 72px;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  border: 1px solid #e1d8ff;
+  border-radius: 8px;
+  background: #fbfaff;
+  padding: 12px;
+}
+
+.multi-summary-grid span,
+.repeat-occurrence span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.multi-summary-grid strong {
+  color: var(--ink);
+  font-size: 22px;
+}
+
+.repeat-list {
+  display: grid;
+  gap: 12px;
+}
+
+.repeat-group {
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-left: 5px solid #94a3b8;
+  border-radius: 8px;
+  background: #fff;
+  padding: 14px;
+}
+
+.repeat-group.is-cross-set {
+  border-left-color: var(--violet);
+}
+
+.repeat-group-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.repeat-group-head h2 {
+  margin-top: 6px;
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+.repeat-badge {
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  border: 1px solid #d8c7ff;
+  border-radius: 8px;
+  background: #f5f0ff;
+  color: var(--violet);
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.repeat-occurrence-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.repeat-occurrence {
+  display: grid;
+  gap: 4px;
+  border: 1px solid #dfe7ef;
+  border-radius: 8px;
+  background: #f8fbff;
+  padding: 12px;
+}
+
+.repeat-occurrence small {
+  color: var(--muted);
+}
+
+.empty-state {
+  border: 1px dashed #c9d7e8;
+  border-radius: 8px;
+  background: #f8fbff;
+  color: var(--muted);
+  padding: 18px;
+  text-align: center;
+  font-weight: 800;
 }
 
 .tool-rail-icon,
@@ -922,6 +1098,10 @@ h1 {
     grid-template-columns: 1fr;
   }
 
+  .admin-login-layout {
+    min-height: auto;
+  }
+
   .tool-card {
     min-height: 170px;
   }
@@ -932,7 +1112,13 @@ h1 {
   }
 
   .table-converter-workspace,
-  .branch-converter-workspace {
+  .branch-converter-workspace,
+  .multi-repeat-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .multi-summary-grid,
+  .repeat-occurrence-grid {
     grid-template-columns: 1fr;
   }
 

@@ -31,11 +31,15 @@ def _join_and_approve(client, email="user@example.com"):
 
 
 def _table_mcq_docx() -> BytesIO:
+    return _mcq_docx("1", "General", "What is 2 + 2?")
+
+
+def _mcq_docx(serial: str, category: str, question: str) -> BytesIO:
     document = Document()
     table = document.add_table(rows=8, cols=2)
-    table.cell(0, 0).text = "1"
-    table.cell(0, 1).text = "General"
-    table.cell(1, 0).text = "What is 2 + 2?"
+    table.cell(0, 0).text = serial
+    table.cell(0, 1).text = category
+    table.cell(1, 0).text = question
     table.cell(2, 0).text = "3"
     table.cell(3, 0).text = "4"
     table.cell(4, 0).text = "5"
@@ -127,6 +131,7 @@ def test_dashboard_and_tool_routes_load():
         "/tools/question-proofreader",
         "/tools/table-converter",
         "/tools/in-branch-question-convert",
+        "/tools/multi-question-set-repeat-checker",
         "/tools/bangla-convert/_module/",
         "/tools/model-test-generate/_module/",
         "/tools/question-proofreader/_module/",
@@ -249,6 +254,35 @@ def test_in_branch_converter_preserves_plain_math_inside_bangla_text():
 
     english_paragraph = output.paragraphs[1]
     assert english_paragraph.runs[0].font.name == "Times New Roman"
+
+
+def test_multi_question_set_repeat_checker_reports_cross_set_repeats():
+    client = app.test_client()
+    _join_and_approve(client)
+    response = client.post(
+        "/tools/multi-question-set-repeat-checker",
+        data={
+            "daily_live": (_mcq_docx("1", "Bangla", "Which poet wrote Banalata Sen?"), "daily-live.docx"),
+            "daily_practice": (
+                _mcq_docx("12", "Bangla", "Which poet wrote Banalata Sen?"),
+                "daily-practice.docx",
+            ),
+            "weekly_live": (_mcq_docx("22", "Bangla", "Who wrote Gitanjali?"), "weekly-live.docx"),
+            "weekly_practice": (
+                _mcq_docx("33", "Bangla", "Which poet wrote Banalata Sen?"),
+                "weekly-practice.docx",
+            ),
+        },
+        content_type="multipart/form-data",
+    )
+
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert "Cross Set Repeat" in html
+    assert "Daily Live" in html
+    assert "Daily Practice" in html
+    assert "Weekly Practice" in html
+    assert "Serial 12" in html
 
 
 def test_tool_routes_are_blocked_before_join_approval():

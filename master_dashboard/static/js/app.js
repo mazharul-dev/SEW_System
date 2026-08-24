@@ -144,7 +144,7 @@ function setupJoinFlow() {
       applyAccess(state);
       joinForm.reset();
       closeJoin();
-      openMessage(data.detail || "01706452007 এই নাম্বারে যোগাযোগ করে approval নিন।");
+      openMessage(data.detail || "আপনার join request জমা হয়েছে। অনুগ্রহ করে অপেক্ষা করুন।");
     } catch (error) {
       openMessage(error instanceof Error ? error.message : "Join request failed.");
     } finally {

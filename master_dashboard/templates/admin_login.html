@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Admin Login | Smart Employee Working system{% endblock %}
+{% block title %}Admin Login | Smart Employee Working System{% endblock %}
 
 {% block content %}
   <section class="dashboard-head" aria-label="Admin login">
@@ -10,7 +10,7 @@
     </div>
   </section>
 
-  <section class="form-layout">
+  <section class="form-layout admin-login-layout">
     <form class="tool-form" method="post" action="{{ url_for('dashboard.admin_login') }}">
       <div class="tool-form-head">
         <span class="mini-tool-icon"><i data-lucide="shield-check"></i></span>

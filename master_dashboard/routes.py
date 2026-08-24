@@ -30,6 +30,7 @@ from .access_control import (
 )
 from .in_branch_converter import convert_docx_to_sutonny
 from .module_loader import clean_model_test_docx, convert_table_docx, parse_docx_bytes
+from .multi_set_repeat_checker import SET_FIELDS, compare_question_sets
 from .paths import MAZHARUL_CONVERTER_DIR, MODEL_TEST_DIR, PROOFREADER_DIR, STATIC_DIR
 from .proofreader_service import spellcheck_payload
 
@@ -40,6 +41,7 @@ model_test_bp = Blueprint("model_test", __name__)
 proofreader_bp = Blueprint("proofreader", __name__)
 table_converter_bp = Blueprint("table_converter", __name__)
 in_branch_bp = Blueprint("in_branch", __name__)
+multi_repeat_bp = Blueprint("multi_repeat", __name__)
 
 
 TOOL_CARDS = [
@@ -79,6 +81,13 @@ TOOL_CARDS = [
         "endpoint": "in_branch.page",
     },
     {
+        "title": "Multi Quetion Set Repeat Checker",
+        "description": "Compare Daily and Weekly question sets to find repeated MCQs.",
+        "icon": "files",
+        "accent": "violet",
+        "endpoint": "multi_repeat.page",
+    },
+    {
         "title": "Coming Soon",
         "description": "Reserved for the next employee productivity tool.",
         "icon": "hourglass",
@@ -114,6 +123,11 @@ def _in_branch_guard():
     return _require_join_approval()
 
 
+@multi_repeat_bp.before_request
+def _multi_repeat_guard():
+    return _require_join_approval()
+
+
 @dashboard_bp.route("/")
 def dashboard():
     return render_template("dashboard.html", tool_cards=TOOL_CARDS, access_state=current_access_state())
@@ -139,7 +153,7 @@ def join_request():
     detail = (
         "এই মেইল আগে থেকেই approved আছে।"
         if access["approved"]
-        else "01706452007 এই নাম্বারে যোগাযোগ করে approval নিন।"
+        else "আপনার join request জমা হয়েছে। অনুগ্রহ করে অপেক্ষা করুন।"
     )
 
     return jsonify(
@@ -431,6 +445,41 @@ def convert():
         mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         as_attachment=True,
         download_name=_download_name(upload.filename, "in_branch_sutonny"),
+    )
+
+
+@multi_repeat_bp.route("/tools/multi-question-set-repeat-checker", methods=["GET", "POST"])
+def page():
+    result = None
+    error = ""
+
+    if request.method == "POST":
+        uploads = {}
+        missing = []
+        for field, label in SET_FIELDS:
+            upload = request.files.get(field)
+            if upload is None or not upload.filename:
+                missing.append(label)
+                continue
+            if not upload.filename.lower().endswith(".docx"):
+                error = f"{label} must be a .docx file."
+                break
+            uploads[field] = upload.read()
+
+        if not error and missing:
+            error = "Please upload all four DOCX files."
+
+        if not error:
+            try:
+                result = compare_question_sets(uploads)
+            except Exception as exc:
+                error = f"Repeat check failed: {exc}"
+
+    return render_template(
+        "multi_repeat_checker.html",
+        fields=SET_FIELDS,
+        result=result,
+        error=error,
     )
 
 

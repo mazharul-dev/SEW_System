@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}multi Quetion Set Repeat Checker | Smart Employee Working System{% endblock %}
+
+{% block content %}
+  <section class="tool-head">
+    <div class="tool-title">
+      <span class="tool-title-icon multi-title-icon"><i data-lucide="files"></i></span>
+      <div>
+        <p class="eyebrow">Integrated Tool</p>
+        <h1>Multi Question Set Repeat Checker</h1>
+        <p>Compare Daily Live, Daily Practice, Weekly Live, and Weekly Practice DOCX files.</p>
+      </div>
+    </div>
+    <a class="secondary-link" href="{{ url_for('dashboard.dashboard') }}">
+      <i data-lucide="layout-dashboard"></i>
+      Dashboard
+    </a>
+  </section>
+
+  <section class="multi-repeat-layout">
+    <form class="tool-form multi-repeat-form" method="post" action="{{ url_for('multi_repeat.page') }}" enctype="multipart/form-data">
+      <div class="tool-form-head">
+        <span class="mini-tool-icon multi-mini-icon"><i data-lucide="upload-cloud"></i></span>
+        <div>
+          <p class="eyebrow">Four Set Compare</p>
+          <h1>Upload DOCX files</h1>
+        </div>
+      </div>
+
+      {% if error %}
+        <div class="form-alert">{{ error }}</div>
+      {% endif %}
+
+      <div class="multi-upload-grid">
+        {% for field, label in fields %}
+          <label class="file-drop multi-drop">
+            <span class="file-drop-icon multi-file-icon"><i data-lucide="file-text"></i></span>
+            <span>
+              <strong>{{ label }}</strong>
+              <small>{{ label }} .docx select korun</small>
+            </span>
+            <input type="file" name="{{ field }}" accept=".docx" required />
+          </label>
+        {% endfor %}
+      </div>
+
+      <button class="primary-button multi-button" type="submit">
+        <i data-lucide="scan-search"></i>
+        Check Repeat
+      </button>
+    </form>
+
+    <section class="multi-result-panel" aria-label="Repeat checker result">
+      {% if result %}
+        <div class="multi-summary-grid">
+          {% for item in result.sets %}
+            <div>
+              <span>{{ item.label }}</span>
+              <strong>{{ item.total }}</strong>
+            </div>
+          {% endfor %}
+          <div>
+            <span>Repeat Groups</span>
+            <strong>{{ result.repeatCount }}</strong>
+          </div>
+          <div>
+            <span>Cross Set</span>
+            <strong>{{ result.crossSetRepeatCount }}</strong>
+          </div>
+        </div>
+
+        {% if result.warnings %}
+          <div class="form-alert">
+            {% for warning in result.warnings %}
+              <div>{{ warning }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% if result.repeats %}
+          <div class="repeat-list">
+            {% for group in result.repeats %}
+              <article class="repeat-group {% if group.crossSet %}is-cross-set{% endif %}">
+                <div class="repeat-group-head">
+                  <div>
+                    <span class="repeat-badge">{{ 'Cross Set Repeat' if group.crossSet else 'Same File Repeat' }}</span>
+                    <h2>{{ group.question }}</h2>
+                  </div>
+                  <strong>{{ group.occurrences|length }} found</strong>
+                </div>
+                <div class="repeat-occurrence-grid">
+                  {% for occurrence in group.occurrences %}
+                    <div class="repeat-occurrence">
+                      <span>{{ occurrence.set }}</span>
+                      <strong>Serial {{ occurrence.serial }}</strong>
+                      <small>{{ occurrence.category or 'No category' }}</small>
+                    </div>
+                  {% endfor %}
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="empty-state">No repeated questions found across the uploaded sets.</div>
+        {% endif %}
+      {% else %}
+        <div class="empty-state">Upload all four DOCX files to see repeated questions by file name and serial.</div>
+      {% endif %}
+    </section>
+  </section>
+{% endblock %}

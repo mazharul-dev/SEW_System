@@ -1,6 +1,6 @@
 # Smart Employee Working System
 
-A unified Flask dashboard for Bangla content conversion, MCQ proofreading, DOCX cleanup, and question formatting. The project brings several employee productivity tools together behind one browser-based workspace with email-based join requests and administrator approval.
+A unified Flask dashboard for Bangla content conversion, MCQ proofreading, DOCX cleanup, repeat checking, and question formatting. The project brings several employee productivity tools together behind one browser-based workspace with email-based join requests and administrator approval.
 
 ## What It Includes
 
@@ -11,6 +11,7 @@ A unified Flask dashboard for Bangla content conversion, MCQ proofreading, DOCX 
 | **Question Repeat Checker** | Parse table-based MCQs, identify repeated questions, and review spelling. |
 | **Table Based Convert** | Convert unstructured MCQ DOCX content into a structured table format. |
 | **In-Branch Question Convert** | Convert Unicode/Avro Bangla DOCX questions into Bijoy SutonnyMJ DOCX files while preserving Word equations and images. |
+| **Multi Quetion Set Repeat Checker** | Upload Daily Live, Daily Practice, Weekly Live, and Weekly Practice DOCX files and see which questions repeat in which set. |
 
 ## Key Features
 
@@ -20,6 +21,7 @@ A unified Flask dashboard for Bangla content conversion, MCQ proofreading, DOCX 
 - In-memory processing for the proofreader workflow
 - LanguageTool-backed English spell checking and local Bangla wordlist support
 - Preservation of Word equations and embedded images during in-branch conversion
+- Four-file repeat checking across Daily Live, Daily Practice, Weekly Live, and Weekly Practice question sets
 - Configurable upload limits, session lifetime, credentials, and data locations
 - Automated integration tests with `pytest`
 
@@ -34,7 +36,7 @@ Join requests are stored in a JSON file under the Flask instance directory by de
 
 ## Requirements
 
-- Python 3.10 or newer
+- Python 3.11 recommended, Python 3.10 or newer supported
 - Node.js and npm for the bundled Unicode-to-Bijoy converter
 - A modern web browser
 
@@ -105,6 +107,7 @@ Do not commit secrets or production join-request data to Git. Keep the `instance
 | `/tools/question-proofreader` | MCQ parser, duplicate checker, and spell checker |
 | `/tools/table-converter` | Table-based DOCX converter |
 | `/tools/in-branch-question-convert` | Unicode/Avro to SutonnyMJ converter |
+| `/tools/multi-question-set-repeat-checker` | Four-set DOCX repeat checker |
 | `/admin/login` | Administrator login |
 | `/admin/approvals` | Manage join requests |
 
@@ -116,7 +119,7 @@ Run the root integration test suite from the project directory:
 python -m pytest -q
 ```
 
-The tests cover dashboard and access-control behavior, DOCX conversion downloads, MCQ parsing, and preservation of equations and images.
+The tests cover dashboard and access-control behavior, DOCX conversion downloads, MCQ parsing, four-set repeat detection, and preservation of equations and images.
 
 ## Project Structure
 
@@ -136,6 +139,14 @@ The tests cover dashboard and access-control behavior, DOCX conversion downloads
 ## Deployment Notes
 
 `app.py` is suitable for local use and simple deployments. For production, run Flask behind a production WSGI server or a reverse proxy, configure a strong secret and administrator password, restrict access to the admin routes, and use persistent storage for `JOIN_REQUESTS_FILE`.
+
+For aaPanel deployment, use Python 3.11, install the requirements, make sure Node.js is available on the server, and run the app behind Nginx reverse proxy. A typical WSGI command is:
+
+```bash
+gunicorn app:app -b 127.0.0.1:5000
+```
+
+Then proxy the domain to `http://127.0.0.1:5000`.
 
 ## License
 
